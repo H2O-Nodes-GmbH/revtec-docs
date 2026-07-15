@@ -19,8 +19,8 @@
 
 ## 📚 Resources
 
-* [Feedback & Contact](resources/feedback-and-contact.md)
 * [Official Links & Mainnet Addresses](resources/official-links-and-addresses.md)
+* [Feedback & Contact](resources/feedback-and-contact.md)
 * [Terms of Use](resources/terms-of-use.md)
 * [Cookie Policy](resources/cookie-policy.md)
 * [Privacy Policy](resources/privacy-policy.md)
