@@ -6,6 +6,8 @@ The objective of the protocol is to give the staker a choice between earning the
 
 RevTec LSTs closely mimic existing staking token designs. This means that the tokens are valued 1-to-1 with SOL at the protocol’s launch, and gain value over time as yield is accumulated. (As a user, you hold a constant balance of the token, and you’re entitled to more underlying SOL the longer you hold the token for.) This is the same well-understood user experience as other LSTs on Solana, and allows for simple DeFi integrations.
 
+> **Mainnet (v2):** Program ID `59k5msuGtD4oCnkYStGSF7kjeBVynQLNtmYjfg79P7V6` · revSOL `HgEWmCePuhRwrTQMnV7Z4oHiNfjbVZHFXA9XfT9DN3FV` · issSOL `2AvFj4iGTpZnrRo7vLuTMoNNfE7VKAK4SpiJfTnu6Nmq`. Full address list: [Mainnet Addresses](../resources/mainnet-addresses.md).
+
 ### Scope: protocol pool vs validator stake
 
 > **Important:** RevTec separates REV and issuance for SOL deposited **through the protocol** (the LSP pool). Stake delegated **directly** to the [RevTec validator](https://stakewiz.com/validator/B1rsc6jv3RsFpkak8qvJN3PfGYSg9E3Uw1joaV1EoiFj) — without minting revSOL or issSOL — earns normal validator rewards on its own. That stake does **not** increase revSOL or issSOL backing.
