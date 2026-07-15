@@ -19,7 +19,6 @@
 
 ## 📚 Resources
 
-* [Mainnet Addresses](resources/mainnet-addresses.md)
 * [Feedback & Contact](resources/feedback-and-contact.md)
 * [GitHub & Other Links](resources/github-and-other-links.md)
 * [Terms of Use](resources/terms-of-use.md)
