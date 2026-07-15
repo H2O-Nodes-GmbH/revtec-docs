@@ -1,12 +1,12 @@
-# GitHub & Other Links
+# Official Links & Mainnet Addresses
 
 Please be cautious when interacting with links from social media or anywhere other than our official channels. For now, these are our ONLY official channels:
 
 | | |
 |---|---|
-| **GitHub** | [github.com/H2O-Nodes-GmbH/RevTec](https://github.com/H2O-Nodes-GmbH/RevTec) |
 | **Website** | [revtec.fi](https://www.revtec.fi/) |
 | **App** | [app.revtec.fi](https://app.revtec.fi/) |
+| **Tools** | [tools.revtec.fi](https://tools.revtec.fi/) — PnL analyzer, protocol analytics, Telegram alerts |
 | **Twitter** | [@RevTec_fi](https://x.com/RevTec_fi) |
 
 ---

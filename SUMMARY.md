@@ -20,7 +20,7 @@
 ## 📚 Resources
 
 * [Feedback & Contact](resources/feedback-and-contact.md)
-* [GitHub & Other Links](resources/github-and-other-links.md)
+* [Official Links & Mainnet Addresses](resources/official-links-and-addresses.md)
 * [Terms of Use](resources/terms-of-use.md)
 * [Cookie Policy](resources/cookie-policy.md)
 * [Privacy Policy](resources/privacy-policy.md)
