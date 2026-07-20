@@ -4,7 +4,7 @@ Staking is often referred to as crypto’s “benchmark rate” or “risk-free 
 
 However, RevTec introduces an additional layer via smart contracts, which brings its own set of risks that users should carefully consider.
 
-**Security reviews:** The live mainnet protocol is the **v2** smart-contract rewrite. It was independently audited by [Accretion](https://accretion.xyz/) in **April 2026** ([audit report](https://drive.google.com/file/d/1A36l5DbKSbVU74A800b909IGTrELBc2p/view)). An earlier Accretion audit (November 2025) and a [protocol analysis report](https://abc-research.at/revtec-protocol-analysis/) covered the prior (v1) design and are historical only — they do **not** apply to the contracts running on mainnet today. Audits reduce risk but do not eliminate it.
+**Security reviews:** The live mainnet protocol runs the **v2** smart contracts — a rewrite of the implementation (the product design is unchanged). Those contracts were independently audited by [Accretion](https://accretion.xyz/) in **April 2026** ([audit report](https://drive.google.com/file/d/1A36l5DbKSbVU74A800b909IGTrELBc2p/view)). An earlier Accretion audit (November 2025) covered the previous (v1) contract codebase and does **not** apply to the contracts running on mainnet today. Separately, a [protocol analysis report](https://abc-research.at/revtec-protocol-analysis/) discusses the RevTec design generally. Audits reduce risk but do not eliminate it.
 
 ## **Smart contract risk**
 

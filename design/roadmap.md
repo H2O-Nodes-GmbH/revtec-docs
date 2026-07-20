@@ -18,7 +18,7 @@
 
 ### Q1–Q2 2026: Protocol V2, Audit & Mainnet
 
-* **Protocol V2 rewrite:** Full rewrite of the smart contracts (v2 LSP), replacing the prior design.
+* **Protocol V2 rewrite:** Full rewrite of the smart contracts (v2 LSP), replacing the prior contract codebase. Product design (dual LST, deposit/withdraw mechanics, yield split) is unchanged.
 * **V2 Audit:** Independent audit of the v2 contracts by [Accretion](https://accretion.xyz/) in April 2026 ([report](https://drive.google.com/file/d/1A36l5DbKSbVU74A800b909IGTrELBc2p/view)).
 * **Mainnet deployment:** Deployment of v2 to mainnet, and initial testing by a small group of users.
 * **Raydium Listings**: Listing of revSOL and issSOL tokens on Raydium, with initial bootstrapped liquidity.
