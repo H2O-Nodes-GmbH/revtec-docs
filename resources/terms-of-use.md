@@ -137,7 +137,7 @@ Without limitation, we do **not** warrant:
 * **DEX liquidity** or favourable swap prices.
 * Continued operation of **Jito**, Solana, or any third-party infrastructure.
 * **Validator** uptime or performance.
-* **Security** of smart contracts. A **November 2025 audit by Accretion** does not guarantee absence of vulnerabilities.
+* **Security** of smart contracts. An **April 2026 audit of the v2 contracts by Accretion** does not guarantee absence of vulnerabilities.
 
 ### C. Liability cap
 

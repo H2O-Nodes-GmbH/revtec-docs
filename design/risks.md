@@ -2,13 +2,15 @@
 
 Staking is often referred to as crypto’s “benchmark rate” or “risk-free rate”, as it represents the lowest-risk method for earning yield. On Solana, this is particularly true: there are no slashing or downtime penalties, and staking is non-custodial, with users retaining full control over their assets. As a result, the risk of loss from native staking is negligible.
 
-However, RevTec introduces an additional layer via smart contracts, which brings its own set of risks that users should carefully consider. Please see the independent [audit](https://drive.google.com/file/d/1z2rFLuJOFLz1aExYj5lkhIXd3yz3_Rmy/view) and [protocol analysis report](https://abc-research.at/revtec-protocol-analysis/) published in November 2025.&#x20;
+However, RevTec introduces an additional layer via smart contracts, which brings its own set of risks that users should carefully consider.
+
+**Security reviews:** The live mainnet protocol is the **v2** smart-contract rewrite. It was independently audited by [Accretion](https://accretion.xyz/) in **April 2026** ([audit report](https://drive.google.com/file/d/1A36l5DbKSbVU74A800b909IGTrELBc2p/view)). An earlier Accretion audit (November 2025) and a [protocol analysis report](https://abc-research.at/revtec-protocol-analysis/) covered the prior (v1) design and are historical only — they do **not** apply to the contracts running on mainnet today. Audits reduce risk but do not eliminate it.
 
 ## **Smart contract risk**
 
-RevTec is built on a set of custom smart contracts. While the protocol is designed with security in mind, bugs or vulnerabilities could lead to unintended behavior—such as unauthorized minting of tokens without staked SOL backing, or incorrect redemption of tokens.\
-\
-➡️ Our protocol received its [first audit](https://drive.google.com/file/d/1z2rFLuJOFLz1aExYj5lkhIXd3yz3_Rmy/view) in November of 2025, by the firm Accretion.&#x20;
+RevTec is built on a set of custom smart contracts. While the protocol is designed with security in mind, bugs or vulnerabilities could lead to unintended behavior—such as unauthorized minting of tokens without staked SOL backing, or incorrect redemption of tokens.
+
+➡️ The current **v2** contracts received an [independent audit by Accretion in April 2026](https://drive.google.com/file/d/1A36l5DbKSbVU74A800b909IGTrELBc2p/view). Mainnet program ID and related addresses are listed under [Official Links & Mainnet Addresses](../resources/official-links-and-addresses.md).
 
 ## **Liquidity risk**
 
