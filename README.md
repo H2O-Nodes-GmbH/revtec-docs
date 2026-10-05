@@ -2,7 +2,7 @@
 
 ## What is RevTec?
 
-RevTec is a liquid staking pool with two liquid staking tokens, revSOL and issSOL, which accrue value from Solana's transction fees and issuance yield, respectively. (Transaction fees are also referred to as "real economic vaue", or REV.) Like other liquid staking tokens, yield is earned transparently on-chain and the tokens are freely composable with other DeFi protocols.
+RevTec is a liquid staking pool with two liquid staking tokens, revSOL and issSOL, which accrue value from Solana's transaction fees and issuance yield, respectively. (Transaction fees are also referred to as "real economic value", or REV.) Like other liquid staking tokens, yield is earned transparently on-chain and the tokens are freely composable with other DeFi protocols.
 
 <figure><img src=".gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
 

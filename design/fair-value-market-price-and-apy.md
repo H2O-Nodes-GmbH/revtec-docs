@@ -12,55 +12,57 @@
 
 ## Two prices
 
-| | **Fair value (FV)** | **Market price (M)** |
-|---|---------------------|----------------------|
-| **What it is** | SOL backing per token (on-chain exchange rate) | Spot price on Raydium / other DEXs |
-| **How it’s set** | `backing_lamports / supply` after yield cranks | Supply and demand in the pool |
-| **Used when** | Protocol mint / redeem (SOL paid for burned tokens) | Buying or selling a single token on a DEX |
+| | **Fair value** | **Market price** |
+|---|----------------|------------------|
+| **What it is** | SOL backing per token (on-chain exchange rate) | Spot price on Raydium or other markets |
+| **How it’s set** | `backing_lamports / supply` after yield updates run | Supply and demand in the pool |
+| **Used when** | Protocol mint / redeem (SOL paid for burned tokens) | Buying or selling a single token on a market |
 
 For each token:
 
 * `rev_fair = rev_backing_lamports / rev_supply`
 * `iss_fair = iss_backing_lamports / iss_supply`
 
-Live fair values and market prices are on [app.revtec.fi](https://app.revtec.fi). Raydium pool links are under [Official Links & Mainnet Addresses](../resources/official-links-and-addresses.md#raydium-clmm-pools).
+In the formulas below, **FV** means fair value and **M** means market price.
 
-**Market can diverge from fair value.** Thin liquidity, flow one way, or temporary dislocations can put either token at a **premium** (`M > FV`) or a **discount** (`M < FV`).
+Live fair values and market prices are on [app.revtec.fi](https://app.revtec.fi). Raydium pool links are under [Official Links & Mainnet Addresses](../resources/official-links-and-addresses.md#raydium-concentrated-liquidity-pools).
+
+**Market can diverge from fair value.** Thin liquidity, one-sided flow, or temporary dislocations can put either token at a **premium** (market above fair value) or a **discount** (market below fair value).
 
 ## Fair-value APY (what the app charts)
 
-**Fair-value APY** (also called protocol / underlying APY) is how fast fair value grows from accrued yield:
+**Fair-value APY** (also called protocol or Underlying APY) is how fast fair value grows from accrued yield:
 
 * **revSOL** — REV (priority fees + Jito tips) credited to rev backing
 * **issSOL** — issuance credited to iss backing
 
 That is what holders earn **relative to fair value** — the growth of redeemable SOL per token. It is **not** automatically “what I earn if I bought on Raydium at today’s market price.”
 
-Headline APY cards and the protocol Underlying APY chart use the **Jito method**: for each Solana epoch, take the change in SOL backing per token, annualize that one step on its own, then average the last **10** of those epoch APYs. That measures backing growth, not a guaranteed return from a DEX entry price.
+Headline yield cards and the protocol Underlying APY chart use the **Jito method**: for each Solana epoch, take the change in SOL backing per token, annualize that one step on its own, then average the last **10** of those epoch yields. That measures backing growth, not a guaranteed return from a market entry price.
 
-## Buying on a DEX
+## Buying on a market
 
-If you buy at market:
+If you buy at market price:
 
-* **Premium** (`M > FV`): you pay more SOL than the token’s current redeemable backing → if that premium later shrinks toward zero, your effective return is dragged below fair-value APY.
-* **Discount** (`M < FV`): you pay less than redeemable backing → if the discount closes, you get a boost relative to fair-value APY.
+* **Premium** (market above fair value): you pay more SOL than the token’s current redeemable backing. If that premium later shrinks toward zero, your effective return is pulled below fair-value APY.
+* **Discount** (market below fair value): you pay less than redeemable backing. If the discount closes, you get a boost relative to fair-value APY.
 
 > **Optional scenario (not a guarantee).** If you buy at market price `M`, fair value grows at protocol APY for one year, and you can exit at the grown fair value, then:
 >
 > `implied APY = (FV / M) × (1 + protocol APY) − 1`
 >
-> This is only honest if the premium/discount **closes** (or you otherwise exit at FV). It is a scenario for thinking about entry price — not a promise from the protocol.
+> This is only honest if the premium or discount **closes** (or you otherwise exit at fair value). It is a way to think about entry price — not a promise from the protocol.
 
 ## Redeem needs both tokens
 
-Protocol withdraw burns **both** revSOL and issSOL in the **live backing ratio** (`rev_backing / total_backing`) and pays SOL for that burn at **fair value**. See [Protocol Design — Withdrawals](protocol-design.md#withdrawals).
+Protocol withdraw burns **both** revSOL and issSOL in the **live backing mix** (`rev_backing / total_backing`) and pays SOL for that burn at **fair value**. See [Protocol Design — Withdrawals](protocol-design.md#withdrawals).
 
 If you hold only revSOL (or only issSOL):
 
-* **Advanced → Direct** unstake buys the missing other token on the DEX (in the live ratio), then redeems both through the protocol.
+* **Advanced → Direct** unstake buys the missing other token on the market (in the live mix), then redeems both through the protocol.
 * **Advanced → Via DEX** sells the token you hold for SOL on the market (no protocol redeem).
 
-Buying the missing leg is what makes “I only hold one token” redeemable. It does **not** by itself erase an entry premium on the token you already held.
+Buying the missing token is what makes a one-sided position redeemable. It does **not** by itself erase an entry premium on the token you already held.
 
 ## Why a premium and a discount do not cancel out
 
@@ -68,38 +70,38 @@ A natural assumption is: *“I bought revSOL at a premium; to redeem I buy issSO
 
 **That is not generally true.**
 
-Under a perfect market-maker that keeps the **redeem basket** at par — the combined market cost of a redeemable pair equals the combined fair value of that pair:
+Assume markets keep a redeemable pair “at par”: the SOL you would pay on the market for the exact revSOL and issSOL amounts needed to redeem equals the SOL that pair is worth at fair value. In symbols:
 
 `M_rev · q_rev + M_iss · q_iss = FV_rev · q_rev + FV_iss · q_iss`
 
-…a premium on one token implies a discount on the other (in the live redeem quantities `q_rev`, `q_iss`). That relationship is about the **basket**, not about refunding your entry price on a single token.
+Under that assumption, a premium on one token means a discount on the other — for those redeem quantities `q_rev` and `q_iss`. That relationship is about the **pair**, not about refunding what you paid when you bought only one token earlier.
 
-If you bought **only rev** at `t = 0` and at exit buy the missing iss then redeem, your net return (under that ideal MM assumption, ignoring fees) simplifies to roughly the **market-price path of the token you held** — something like `M_rev₁ / M_rev₀ − 1` — **not** automatic fair-value APY.
+If you bought **only revSOL** at the start and at exit buy the missing issSOL then redeem, your net return (under that ideal market-maker assumption, ignoring fees) simplifies to roughly the **market-price path of the token you held** — something like `M_rev₁ / M_rev₀ − 1` — **not** automatic fair-value APY.
 
-Buying the cheap other token at redeem is what makes “redeem” ≈ “exit at the market value of what you held.” It does **not** refund an entry premium.
+Buying the cheaper other token at redeem is what makes “redeem” approximately “exit at the market value of what you held.” It does **not** refund an entry premium.
 
-When you *do* get ~fair-value APY after a DEX buy of one token:
+When you *do* get about fair-value APY after a market buy of one token:
 
-* Roughly when that token’s premium/discount **percentage stays about constant** over the hold (market tracks FV growth one-for-one), or
-* When you mint / hold a full redeem basket from day one and exit at protocol fair value.
+* Roughly when that token’s premium or discount **percentage stays about constant** over the hold (market tracks fair-value growth one-for-one), or
+* When you mint or hold a full redeem pair from day one and exit at protocol fair value.
 
-If a premium **mean-reverts toward zero** over the year, you earn **less** than that token’s fair-value APY.
+If a premium **drifts back toward zero** over the year, you earn **less** than that token’s fair-value APY.
 
 ## Paths compared
 
 | Path | Effective outcome (idealized) |
 |------|-------------------------------|
-| Mint / hold a **full redeem basket** from day one, redeem at protocol FV | ≈ blended fair-value APY of rev + iss |
-| Buy **one** token on a DEX, later buy the other + redeem | ≈ that token’s **market** return path |
+| Mint / hold a **full redeem pair** from day one, redeem at protocol fair value | ≈ blended fair-value APY of rev + iss |
+| Buy **one** token on a market, later buy the other + redeem | ≈ that token’s **market** return path |
 | Same, but the token’s **premium collapses** over the hold | Worse than that token’s fair-value APY |
-| Sell on a DEX at the end (no redeem) | Also ≈ market price of what you hold |
+| Sell on a market at the end (no redeem) | Also ≈ market price of what you hold |
 
-Real markets add frictions: swap fees, slippage, imperfect market-making, and temporary dislocations where the basket itself trades off par. Always compare Direct vs Via DEX quotes in the app before exiting.
+Real markets add frictions: swap fees, slippage, imperfect market-making, and temporary dislocations where the pair itself trades off par. Always compare Direct vs Via DEX quotes in the app before exiting.
 
 ## How this shows up in the app
 
-* **Dashboard / protocol APY cards** — fair-value (protocol) APY: epoch-over-epoch growth of on-chain backing per token, averaged over the last 10 epochs.
-* **Fair value vs market** — the app already surfaces both so you can see premium or discount.
-* **Any “market-implied” return framing** (now or later) should be treated as a **scenario** that depends on whether premium/discount closes — not as a guaranteed APY from a DEX purchase.
+* **Dashboard / protocol yield cards** — fair-value (protocol) APY: each epoch’s growth of on-chain backing per token, averaged over the last 10 epochs.
+* **Fair value vs market** — the app already shows both so you can see premium or discount.
+* **Any “market-implied” return framing** (now or later) should be treated as a **scenario** that depends on whether premium or discount closes — not as a guaranteed yield from a market purchase.
 
-For mint/redeem mechanics and the live backing split, see [Protocol Design](protocol-design.md). For liquidity and market-vs-fair-value risk, see [Risks](risks.md).
+For mint and redeem mechanics and the live backing mix, see [Protocol Design](protocol-design.md). For liquidity and market-vs-fair-value risk, see [Risks](risks.md).

@@ -1,8 +1,8 @@
 # Staking Yield Components
 
-Stakers who don't use RevTec receive a default staking yield, which consists of newly minted SOL tokens (aka inflation), tips collected by the [Jito](https://www.jito.wtf/) client, and priority fees (aka block rewards). These are combined and passed onto the staker, minus the validator operator's commission fees. The combination of Jito tips and priority fees are commonly referred to as "real economic value", or REV. They both serve the same purpose, which is to increase the likelihood that a transaction is included by a validator in a block. RevTec will combine these two yield sources and pass them onto holders of revSOL.&#x20;
+Without RevTec, stakers earn a **default staking yield** that mixes three sources: newly minted SOL (issuance / inflation), tips collected by the [Jito](https://www.jito.wtf/) client, and priority fees (also called block rewards). Those are combined and paid to the staker after the validator’s commission. Jito tips and priority fees together are commonly called **real economic value (REV)** — both pay for a higher chance that a transaction is included in a block. RevTec routes that combined REV stream to **revSOL** holders.
 
-Starting in 2024, as shown below, increasing on-chain activity on Solana led to the generation and capture of a significant amount of fees for stakers and validators. This new source of yield more than compensated for the ever-decreasing issuance yield, but also had the effect of increasing the volatility of the default staking yield.&#x20;
+Starting in 2024, as shown below, rising on-chain activity on Solana generated substantial fees for stakers and validators. That new yield more than offset declining issuance yield for a time, but it also made default staking yield more volatile.
 
 <figure><img src="../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
 
@@ -10,7 +10,7 @@ Starting in 2024, as shown below, increasing on-chain activity on Solana led to 
 
 Jito Tips are a fee-paying mechanism via Jito’s bundling infrastructure. Especially useful for arbitrage traders, who can submit bundles of transactions to be executed together. Validators can determine how much gets passed back to the staker via Jito’s Tip Router. Jito tips are sometimes referred to as “MEV tips” or “MEV yield”.
 
-In more detail: Unsophisticated trading behavior or time-sensitive liquidity imbalances cause inefficiencies or arbitrage opportunities in on-chain markets. Arbitrageurs (known as MEV searchers) detect these opportunities and submit bundles of prioritized transactions through Jito’s infrastructure. To ensure inclusion of their bundles in a block, they attach tips (paid in SOL) to their bundles. These tips are received by validators running the Jito-Solana client. Validators then take a commission rewards before distributing the remaining tips to their stakers.
+In more detail: Unsophisticated trading behavior or time-sensitive liquidity imbalances cause inefficiencies or arbitrage opportunities in on-chain markets. Arbitrageurs (known as MEV searchers) detect these opportunities and submit bundles of prioritized transactions through Jito’s infrastructure. To ensure inclusion of their bundles in a block, they attach tips (paid in SOL) to their bundles. These tips are received by validators running the Jito-Solana client. Validators take a commission, then distribute the remaining tips to their stakers.
 
 As on-chain activity spikes (e.g. during mints, airdrops, liquidations, or major DEX trades), the number and value of arbitrage opportunities increase—leading to higher cumulative tips and thus greater REV for validators and stakers. As shown below, the amount of REV generated on Solana is highly correlated with the on-chain trading volume.
 
@@ -18,7 +18,7 @@ As on-chain activity spikes (e.g. during mints, airdrops, liquidations, or major
 
 ## Priority Fees
 
-Priority fees are Solana’s native fee mechanism, allowing users to pay extra for their transactions to be prioritized over others. Also referred to as “block rewards”, these fees are kept by the validator by default, but can be shared via custom logic or LSTs, Jito’s upgraded Tip Router, or the upcoming SIMD-123 implementation.
+Priority fees are Solana’s native fee mechanism: users pay extra so their transactions are prioritized over others. Also called “block rewards,” these fees stay with the validator by default, but can be shared via custom logic, liquid staking protocols, Jito’s Tip Router, or the upcoming SIMD-123 implementation.
 
 In more detail: During periods of high network congestion—when many transactions are competing for block space—users often raise their fee levels to increase the likelihood of inclusion. This is especially true for traders and MEV searchers, who are willing to pay high fees to ensure the timely execution of arbitrage or other profitable strategies.
 
@@ -40,7 +40,7 @@ Newly issued SOL tokens are distributed as rewards to stakers. However, since no
 
 <figure><img src="../.gitbook/assets/image (34).png" alt=""><figcaption><p>March 2020 is year "0". </p></figcaption></figure>
 
-Therefore, in addition to the steady decline in issuance due to Solana’s decreasing inflation schedule, the percentage of SOL that is staked also plays a key role in determining the staking APY from issuance. However, this staking rate has historically remained relatively stable, hovering around 66%, which has helped keep issuance-based staking yields fairly predictable over time.
+So issuance staking yield depends on both Solana’s declining inflation schedule and what share of SOL is staked. That staking rate has stayed near ~66% for a long time, which has kept issuance-based yields relatively predictable.
 
 <figure><img src="../.gitbook/assets/image (21).png" alt=""><figcaption><p>Source: <a href="https://dune.com/21co/staking-dashboard">Dune</a></p></figcaption></figure>
 

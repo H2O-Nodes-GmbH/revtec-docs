@@ -21,7 +21,7 @@ RevTec **v2** on Solana mainnet-beta. These addresses are public on-chain; integ
 
 | Item | Address |
 |------|---------|
-| **RevTec LSP program (v2)** | [`59k5msuGtD4oCnkYStGSF7kjeBVynQLNtmYjfg79P7V6`](https://solscan.io/account/59k5msuGtD4oCnkYStGSF7kjeBVynQLNtmYjfg79P7V6) |
+| **RevTec liquid staking program (v2)** | [`59k5msuGtD4oCnkYStGSF7kjeBVynQLNtmYjfg79P7V6`](https://solscan.io/account/59k5msuGtD4oCnkYStGSF7kjeBVynQLNtmYjfg79P7V6) |
 
 ### Liquid staking tokens (SPL mints)
 
@@ -56,7 +56,7 @@ All SOL deposited through RevTec is staked with the RevTec validator:
 | Validator PDA (program) | [`GXHFUt461HhNn3Co77ixQoFhTNeyPiueM6nmLM1RQN1E`](https://solscan.io/account/GXHFUt461HhNn3Co77ixQoFhTNeyPiueM6nmLM1RQN1E) |
 | Primary stake account | [`3UFXnHhnRaYht3bTtR3zz4jVNqUYJnVyFCWDb2xUGb63`](https://solscan.io/account/3UFXnHhnRaYht3bTtR3zz4jVNqUYJnVyFCWDb2xUGb63) |
 
-### Raydium CLMM pools
+### Raydium concentrated-liquidity pools
 
 Secondary liquidity (not protocol-owned):
 

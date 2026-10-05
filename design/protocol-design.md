@@ -11,19 +11,19 @@
 
 ## The Objective
 
-The objective of the protocol is to give the staker a choice between earning the “real economic value” (REV) of Solana’s transaction fees, or the inflationary issuance of new SOL tokens. Standard staking yield combines both, and RevTec aims to separate them, and allow users to earn them with much higher capital efficiency. To achieve this, RevTec creates two liquid staking tokens (LSTs): revSOL earns REV from transaction fees, while issSOL earns the issuance of new SOL.
+Normal Solana staking mixes two yields: **issuance** (new SOL) and **real economic value (REV)** (priority fees and tips). RevTec separates them into two liquid staking tokens — **issSOL** and **revSOL** — so you can choose which stream to hold, with more capital efficiency than holding blended staking yield alone.
 
-RevTec LSTs closely mimic existing staking token designs. This means that the tokens are valued 1-to-1 with SOL at the protocol’s launch, and gain value over time as yield is accumulated. (As a user, you hold a constant balance of the token, and you’re entitled to more underlying SOL the longer you hold the token for.) This is the same well-understood user experience as other LSTs on Solana, and allows for simple DeFi integrations.
+These tokens follow the usual liquid-staking pattern on Solana: they start near 1:1 with SOL at launch and gain value as yield accrues. Your token **balance** can stay constant while each token becomes redeemable for more SOL over time. That familiar model makes DeFi integrations straightforward.
 
 > **Mainnet (v2):** Program ID `59k5msuGtD4oCnkYStGSF7kjeBVynQLNtmYjfg79P7V6` · revSOL `HgEWmCePuhRwrTQMnV7Z4oHiNfjbVZHFXA9XfT9DN3FV` · issSOL `2AvFj4iGTpZnrRo7vLuTMoNNfE7VKAK4SpiJfTnu6Nmq`. Full address list: [Official Links & Mainnet Addresses](../resources/official-links-and-addresses.md#mainnet-addresses-v2).
 
 ### Scope: protocol pool vs validator stake
 
-> **Important:** RevTec separates REV and issuance for SOL deposited **through the protocol** (the LSP pool). Stake delegated **directly** to the [RevTec validator](https://stakewiz.com/validator/B1rsc6jv3RsFpkak8qvJN3PfGYSg9E3Uw1joaV1EoiFj) — without minting revSOL or issSOL — earns normal validator rewards on its own. That stake does **not** increase revSOL or issSOL backing.
+> **Important:** RevTec separates REV and issuance for SOL deposited **through the protocol** (the liquid staking pool). Stake delegated **directly** to the [RevTec validator](https://stakewiz.com/validator/B1rsc6jv3RsFpkak8qvJN3PfGYSg9E3Uw1joaV1EoiFj) — without minting revSOL or issSOL — earns normal validator rewards on its own. That stake does **not** increase revSOL or issSOL backing.
 >
-> **Concentration (within the pool):** All REV earned on **protocol stake** is allocated to the rev leg; all issuance earned on protocol stake is allocated to the iss leg. So revSOL holders earn the fee stream from the **entire protocol stake base**, concentrated onto the rev portion — not split pro-rata like blended LSTs. When network REV is high, revSOL APY can exceed default staking by a wide margin (see Simple Example).
+> **Concentration (within the pool):** All REV earned on **protocol stake** goes to revSOL’s backing; all issuance earned on protocol stake goes to issSOL’s backing. So revSOL holders earn fees from the **entire protocol stake base**, concentrated onto the smaller rev portion — not split pro-rata like a normal liquid staking token. When network REV is high, revSOL’s annualized yield can exceed ordinary staking by a wide margin (see Simple Example).
 >
-> **Pilot note:** revSOL APY can look low in quiet markets because REV is a small share of total staking yield today, and protocol TVL may be small relative to total validator stake. That reflects network conditions and scale, not a broken design.
+> **Pilot note:** revSOL’s yield can look low in quiet markets because REV is a small share of total staking yield today, and protocol deposits may be small relative to total stake on the validator. That reflects network conditions and scale, not a broken design.
 
 ## Rewards & Fees
 
@@ -31,7 +31,7 @@ RevTec is an accounting system that tracks two yield types on **protocol stake**
 
 | Yield type | Token | Source | On-chain update |
 |------------|-------|--------|-----------------|
-| **Issuance** (inflation) | issSOL | Native staking rewards in validator stake accounts | `process_iss_yield` (permissionless crank, per epoch) |
+| **Issuance** (inflation) | issSOL | Native staking rewards in validator stake accounts | `process_iss_yield` (permissionless update, per epoch) |
 | **REV** (priority fees + Jito tips) | revSOL | Tips claimed via [Jito Tip Router](https://www.jito.network/blog/tiprouter-upgrade-facilitating-priority-fees/), swept to `rev_yield_treasury` | `sweep_jito_tips_from_stake` / `collect_jito_tips`, then `process_rev_yield` |
 
 At launch, the [RevTec validator](https://stakewiz.com/validator/B1rsc6jv3RsFpkak8qvJN3PfGYSg9E3Uw1joaV1EoiFj) shares priority fees and Jito tips with delegators via the Tip Router ([solsharing](https://www.solsharing.com/)). **All SOL deposited through RevTec** is staked with this validator.
@@ -46,13 +46,13 @@ Issuance rewards accrue inside the validator’s stake accounts each epoch (Sola
 
 #### REV (revSOL)
 
-REV (priority fees and Jito tips on **protocol stake**) is swept into `rev_yield_treasury`. A permissionless **`process_rev_yield`** crank then increases `rev_backing_lamports` (the exchange rate step-up). SOL remains in the treasury; only the backing counter changes — similar to how other LSTs track accrued yield in an exchange rate.
+REV (priority fees and Jito tips on **protocol stake**) is swept into `rev_yield_treasury`. A permissionless **`process_rev_yield`** update then increases `rev_backing_lamports` (the exchange-rate step-up). SOL remains in the treasury; only the backing counter changes — the same pattern other liquid staking tokens use to track accrued yield.
 
 Fair value of revSOL is:
 
 `rev_fair = rev_backing_lamports / rev_supply`
 
-REV does **not** auto-compound silently: cranks must run (anyone can run them). In practice, bots or the team run them regularly.
+REV does **not** auto-compound silently: these on-chain updates (often called cranks) must run (anyone can run them). In practice, bots or the team run them regularly.
 
 #### Protocol vs validator fees
 
@@ -65,7 +65,7 @@ Fees that **do** apply:
 | RevTec validator | 10% commission on **issuance** | Funds ongoing development |
 | Jito | 1.5% on shared priority fees; 3% on Jito tips | Standard Tip Router economics |
 
-These validator/Jito fees may be revisited after mainnet launch.
+These validator and Jito fees may be revisited over time.
 
 ## Initializing the Protocol
 
@@ -92,7 +92,7 @@ New SOL deposited via the protocol mints **both** revSOL and issSOL in proportio
 
 Why both tokens? SOL in the pool will earn **both** yield types; accounting assigns issuance to iss backing and REV to rev backing.
 
-Alternatively, the desired token can be purchased on a DEX. (You’ll see these options in our staking application at [app.revtec.fi](https://app.revtec.fi).)
+Alternatively, you can buy the token you want on a market such as Raydium. (You’ll see these options in the app at [app.revtec.fi](https://app.revtec.fi).)
 
 #### Withdrawals
 
@@ -100,14 +100,14 @@ To withdraw SOL from the protocol, users burn **both** tokens in proportion to t
 
 Example: if backing is 20% rev / 80% iss, withdrawing 10 SOL requires burning rev and iss tokens in that 20:80 proportion (see Simple Example, step 4). A fresh deposit at that moment would mint in the same 20:80 proportion.
 
-Users who want a **single-token** exposure (rev-only or iss-only) typically:
+Users who want **only revSOL** or **only issSOL** typically:
 
-* **Buy/sell on a DEX** (advanced → via DEX in the app), or
-* **Deposit**, then **swap away** the unwanted leg (advanced → direct in the app).
+* **Buy or sell on a market** (Advanced → Via DEX in the app), or
+* **Deposit both tokens**, then sell the one they don’t want (Advanced → Direct in the app).
 
 #### Instant vs delayed exit
 
-**Instant withdraw** pays SOL from the protocol **treasury buffer** if it holds enough liquid SOL (above rent reserve). If the buffer is empty or too small, users must use **delayed withdraw**: deactivate stake at epoch boundary, wait for cooldown, then claim.
+**Instant withdraw** pays SOL from the protocol **treasury buffer** if it holds enough liquid SOL (above the rent reserve). If the buffer is empty or too small, users must use **delayed withdraw**: deactivate stake at an epoch boundary, wait for the cooldown, then claim.
 
 Check the app for current treasury capacity before assuming instant exit is available.
 
@@ -121,9 +121,9 @@ Because we initialized the pool ratio in line with their reward rate, the APYs o
 
 #### What “concentrated” means in practice
 
-* **Inside the LSP:** 100% of REV from protocol stake → rev backing; 100% of issuance from protocol stake → iss backing.
-* **Not across the whole validator:** SOL staked to the RevTec validator **outside** the protocol (e.g. direct delegation) does not flow into revSOL backing.
-* **APY headline numbers** on the app use the same method as JitoSOL: each epoch’s fair-value growth (`backing / supply`) is annualized on its own, then smoothed with a trailing **10-epoch** average. revSOL can still look **flat or low** for stretches in calm markets, then rise when REV cranks process a batch of tips — a single catch-up epoch is dampened by that average.
+* **Inside the protocol pool:** 100% of REV from protocol stake goes to revSOL’s backing; 100% of issuance from protocol stake goes to issSOL’s backing.
+* **Not across the whole validator:** SOL staked to the RevTec validator **outside** the protocol (for example, direct delegation) does not flow into revSOL backing.
+* **Yield figures in the app** use the same method as JitoSOL: each epoch’s fair-value growth (`backing / supply`) is annualized on its own, then smoothed with a trailing **10-epoch** average. revSOL can still look **flat or low** for stretches in calm markets, then rise when REV updates process a batch of tips — a single catch-up epoch is dampened by that average.
 
 ## Simple Example
 
@@ -140,10 +140,10 @@ Because we initialized the pool ratio in line with their reward rate, the APYs o
 2\. The user deposits:
 
 * The protocol has been initialized; current backing is still 20% rev / 80% iss, so later deposits use that live mix (not a separate admin policy).
-* A user deposits 10 SOL, wishing to acquire revSOL only.
-  * If the user stakes via the **basic** mechanism (without selecting “advanced mode”) the protocol will mint for him 2 revSOL and 8 issSOL. He must then manually sell his 8 issSOL for SOL, and repeat the staking action, or directly sell the 8 issSOL for revSOL.
-  * If the user chooses **“advanced mode, direct”** the application will automate the action of staking and selling issSOL three times, before it stakes and uses the remaining SOL to purchase revSOL on a dex.
-  * If the user chooses **“advanced mode, via dex”** the user simply uses his entire 10 SOL deposit to purchase his desired revSOL via a dex.
+* A user deposits 10 SOL, wishing to hold revSOL only.
+  * In **basic** mode (no Advanced options), the protocol mints 2 revSOL and 8 issSOL. To end up rev-only, the user must sell the 8 issSOL (for SOL or for more revSOL).
+  * **Advanced → Direct** automates staking and selling issSOL several times, then uses remaining SOL to buy revSOL on a market.
+  * **Advanced → Via DEX** spends the full 10 SOL buying revSOL on a market.
 
 <figure><img src="../.gitbook/assets/image (40).png" alt="" width="563"><figcaption><p>The staking flow</p></figcaption></figure>
 
@@ -162,30 +162,30 @@ Because we initialized the pool ratio in line with their reward rate, the APYs o
   * Distributed to the 88 SOL, this results in a 4.4/88 = 5% increase in the value of issSOL
   * The issuance bucket now has 88 + 4.4 = 92.4 SOL backing it.
 
-> **Cranks:** In production, `process_iss_yield` and `process_rev_yield` are separate permissionless instructions. Yield appears in fair value after cranks run — not necessarily at the exact epoch boundary on a clock.
+> **On-chain updates:** In production, `process_iss_yield` and `process_rev_yield` are separate permissionless instructions. Yield appears in fair value after they run — not necessarily at the exact epoch boundary on a clock.
 
-Over the course of the year, staking SOL outside of revTec would have earned 6% APY. Holding revSOL would have earned 10%, and holding issSOL would have earned 5%. Because REV APY increased from the previous year, and issuance APY stayed the same, the size of the REV pool grew faster than the issuance pool, becoming a more dominant share of the total staked SOL, and increasing the ratio in favor of REV.
+Over the course of the year, staking SOL outside RevTec would have earned 6% APY. Holding revSOL would have earned 10%, and holding issSOL would have earned 5%. Because REV yield rose while issuance stayed the same, the REV pool grew faster than the issuance pool and became a larger share of total staked SOL.
 
 4\. User redeems: \
-Now that the year is over, the user wishes to redeem his revSOL for SOL.
+Now that the year is over, the user wants to redeem revSOL for SOL.
 
 * The protocol now has 24.2 SOL in the REV portion and 92.4 SOL in the issuance portion, for a total of 114.6 SOL. The REV:issuance ratio is 1:3.82.
-* If the user stakes via the **basic** mechanism (without selecting “advanced mode”), he will need to acquire issSOL in the ratio of 1:3.82 to be able to deposit both tokens. To redeem his 10 revSOL, he also needs 38.2 issSOL to deposit into the protocol.
-* If the user chooses **“advanced mode, direct”** the application will automate the action of buying the missing token and unstaking both the tokens for SOL.
-* If the user chooses **“advanced mode, via dex”** the application will simply sell the 10revSOL for SOL via a dex.
+* In **basic** mode, the user must obtain issSOL in that 1:3.82 mix to redeem. To redeem 10 revSOL, they also need 38.2 issSOL.
+* **Advanced → Direct** buys the missing token and redeems both for SOL through the protocol.
+* **Advanced → Via DEX** sells the 10 revSOL for SOL on a market (no protocol redeem).
 
 <figure><img src="../.gitbook/assets/image.png" alt="" width="536"><figcaption><p>The unstaking flow</p></figcaption></figure>
 
-Generally, the choice of which staking and unstaking route to take will depend on which can yield a better result for the user. The application displays the token, allowing the user to choose the most price-efficient option for themselves.
+Which route is best depends on price and liquidity at the time. The app shows quotes so you can pick the more efficient path for your size.
 
 ## Wrapping Up
 
-RevTec is a dual-LST design: **issSOL** for issuance-like yield, **revSOL** for REV (fee) exposure, with fair value tracked on-chain as backing per token. It is the first dual staking token design we’re aware of on Solana; that novelty means:
+RevTec is a dual-token liquid staking design: **issSOL** for issuance-like yield, **revSOL** for REV (fee) exposure, with fair value tracked on-chain as backing per token. It is the first dual staking token design we’re aware of on Solana; that novelty means:
 
-* **DEX liquidity** matters for single-token positions.
+* **Market liquidity** matters for single-token positions.
 * **Deposits and withdrawals share one live backing mix** — it drifts as yield accrues (only the very first deposit used a configured seed).
-* **REV APY is volatile** — quiet networks produce quiet revSOL; activity spikes produce the concentrated upside described above.
+* **REV yield is volatile** — quiet networks produce quiet revSOL; activity spikes produce the concentrated upside described above.
 
-The app simplifies routing (basic deposit, advanced direct, advanced via DEX). Choose the path that minimizes slippage and leftover inventory for your size.
+The app simplifies routing (basic deposit, Advanced → Direct, Advanced → Via DEX). Choose the path that minimizes slippage and leftover tokens for your size.
 
-For current parameters (backing mix, fair values, APY), use [app.revtec.fi](https://app.revtec.fi).
+For current parameters (backing mix, fair values, yield), use [app.revtec.fi](https://app.revtec.fi).

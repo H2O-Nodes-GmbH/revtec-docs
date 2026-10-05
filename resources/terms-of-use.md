@@ -27,11 +27,11 @@ RevTec is a **dual-token liquid staking** design on Solana. Staking yield is con
 
 Fair value of each token is determined on-chain as backing lamports divided by token supply. Your token **balance** may stay constant while each token becomes redeemable for **more SOL over time** if yield accrues — similar to other liquid staking tokens.
 
-**Scope (important):** REV and issuance described above apply to SOL deposited **through the RevTec protocol** (the LSP pool). SOL staked **directly** to the RevTec validator (or any validator) **without** depositing through the protocol does **not** mint revSOL or issSOL and does **not** increase protocol backing. revSOL holders participate in REV earned on **protocol TVL**, concentrated on the rev leg — not necessarily in REV earned by all stake on the validator.
+**Scope (important):** REV and issuance described above apply to SOL deposited **through the RevTec protocol** (the liquid staking pool). SOL staked **directly** to the RevTec validator (or any validator) **without** depositing through the protocol does **not** mint revSOL or issSOL and does **not** increase protocol backing. revSOL holders participate in REV earned on **protocol deposits** (total value locked in the pool), concentrated on the rev side — not necessarily in REV earned by all stake on the validator.
 
-Within the pool, **100% of REV** processed by the protocol is allocated to rev backing and **100% of issuance** processed by the protocol is allocated to iss backing. That **concentration** can amplify revSOL APY when network REV is elevated, and can produce **low or volatile revSOL APY** when network activity is quiet.
+Within the pool, **100% of REV** processed by the protocol is allocated to rev backing and **100% of issuance** processed by the protocol is allocated to iss backing. That **concentration** can amplify revSOL’s annualized yield when network REV is elevated, and can produce **low or volatile** revSOL yield when network activity is quiet.
 
-The protocol may operate at **limited TVL** during pilot phases. Liquidity, cranks, and treasury capacity may be immature. Use only what you can afford to lose.
+The protocol may operate at **limited deposit size** during pilot phases. Liquidity, on-chain yield updates, and treasury capacity may be immature. Use only what you can afford to lose.
 
 ### B. Deposits, withdrawals, and ratios
 
@@ -39,11 +39,11 @@ The protocol may operate at **limited TVL** during pilot phases. Liquidity, cran
 
 **Withdrawals:** To withdraw SOL from the protocol, you must burn **both** revSOL and issSOL in that same **current backing mix**, which **drifts over time** as the two yield sources accrue at different rates.
 
-**Single-token exposure:** If you want only revSOL or only issSOL, you may use DEX swaps or app tooling ("advanced" flows). Such routes involve **slippage, liquidity, and market price vs fair value** risks we do not control.
+**Single-token exposure:** If you want only revSOL or only issSOL, you may use market swaps or app tooling ("Advanced" flows). Such routes involve **slippage, liquidity, and market price vs fair value** risks we do not control.
 
 **Instant vs delayed exit:** Instant withdrawal depends on a liquid **treasury buffer**. If insufficient, you must use **delayed withdrawal** (epoch-bound unstaking and cooldown). Availability is shown in the Interface but is **not guaranteed**.
 
-**Cranks:** Yield accrual in fair value generally requires **permissionless third-party or operator "crank" transactions** (e.g. processing issuance or REV yield). Cranks may be delayed; displayed APY may lag on-chain state.
+**On-chain yield updates:** Fair-value growth generally requires **permissionless third-party or operator update transactions** (often called cranks — e.g. processing issuance or REV yield). Those updates may be delayed; displayed yield may lag on-chain state.
 
 ### C. Validator, Jito, and fees
 
