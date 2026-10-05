@@ -35,9 +35,9 @@ The protocol may operate at **limited TVL** during pilot phases. Liquidity, cran
 
 ### B. Deposits, withdrawals, and ratios
 
-**Deposits:** When you deposit SOL through the protocol (standard flow), you typically receive **both** revSOL and issSOL according to the configured **deposit split** (on mainnet, currently **10% rev / 90% iss** unless changed by governance). You cannot mint only one token through the standard on-chain deposit instruction.
+**Deposits:** When you deposit SOL through the protocol (standard flow), you typically receive **both** revSOL and issSOL in proportion to the **current backing mix** (rev backing ÷ total backing). You cannot mint only one token through the standard on-chain deposit instruction. (The protocol’s very first deposit was seeded from a configured starting mix; every deposit after that follows live backing.)
 
-**Withdrawals:** To withdraw SOL from the protocol, you must burn **both** revSOL and issSOL in proportion to the **current backing split** (rev backing ÷ total backing), which **drifts over time** as the two yield sources accrue at different rates. The backing split at exit may differ from the deposit split at entry.
+**Withdrawals:** To withdraw SOL from the protocol, you must burn **both** revSOL and issSOL in that same **current backing mix**, which **drifts over time** as the two yield sources accrue at different rates.
 
 **Single-token exposure:** If you want only revSOL or only issSOL, you may use DEX swaps or app tooling ("advanced" flows). Such routes involve **slippage, liquidity, and market price vs fair value** risks we do not control.
 

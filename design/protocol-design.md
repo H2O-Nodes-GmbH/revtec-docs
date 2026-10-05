@@ -5,7 +5,7 @@
 * RevTec turns staking yield into two liquid staking tokens: **revSOL**, which earns Solana’s real economic value (transaction fees and tips), and **issSOL**, which earns issuance (newly minted SOL). Each token’s **fair value** is the SOL that backs it divided by how many tokens exist, and that fair value rises as rewards accrue — the same pattern as other liquid staking tokens on Solana.
 * The yield described on this page applies to SOL you deposit **through the RevTec protocol**. Staking SOL directly with the RevTec validator without minting these tokens does **not** increase revSOL or issSOL backing.
 * Inside the protocol pool, all of that pool’s fee-and-tip rewards go to revSOL’s backing, and all of its issuance rewards go to issSOL’s backing. Because of that concentration, each token’s yield can differ a lot from ordinary staking.
-* When you deposit, the protocol mints both tokens using a fixed **deposit split**. When you withdraw, you must burn both tokens using the **current backing mix**, which can drift over time. Withdrawals pay SOL at fair value.
+* Deposits and withdrawals both use the **current backing mix** (rev backing ÷ total backing). You receive both tokens when you deposit, and you must burn both in that same live mix when you withdraw. The mix drifts over time as the two yield sources accrue at different rates. Withdrawals pay SOL at fair value.
 * If you want only revSOL or only issSOL, you use a market (or the app’s Advanced options). Market price can differ from fair value — see [Fair Value, Market Price & APY](fair-value-market-price-and-apy.md).
 * Yield figures in the app are annualized from how fast **fair value** grows after on-chain reward updates run.
 
@@ -69,26 +69,26 @@ These validator/Jito fees may be revisited after mainnet launch.
 
 ## Initializing the Protocol
 
-Over time, cumulative REV and issuance rewards diverge; the protocol tracks both backing pools independently. **Before any rewards exist**, the **deposit split** (what fraction of new SOL mints rev vs iss) is set from the then-current mix of network staking yield — e.g. if staking is ~5% APY with ~1% from REV and ~4% from issuance, a **1:4 rev:iss deposit split** is a reasonable initialization.
+Over time, cumulative REV and issuance rewards diverge; the protocol tracks both backing pools independently. **Before any backing exists**, a proportional split is undefined, so the **first** deposit seeds the pools from a configured starting mix (chosen to roughly match the then-current mix of network staking yield) — e.g. if staking is ~5% APY with ~1% from REV and ~4% from issuance, a **1:4 rev:iss** seed is a reasonable start.
 
-**Live mainnet (example):** deposit split is **10% rev / 90% iss** (`rev_split_bps = 1000`). The **1:4 (20/80) ratio in the Simple Example below is illustrative** — the math is the same; only the numbers change.
+**Live mainnet (example):** the first deposit was seeded at **10% rev / 90% iss**. The **1:4 (20/80) ratio in the Simple Example below is illustrative** — the math is the same; only the numbers change.
 
-Using the chosen split, initial SOL is deposited and revSOL / issSOL are minted ~1:1 with SOL at fair value (exchange rate starts near 1.0 and grows as yield accrues). As REV and issuance arrive at **different rates**, backing grows at different rates → **rev and iss APY diverge** even though the deposit split started “balanced.”
+That first deposit mints revSOL / issSOL ~1:1 with SOL at fair value (exchange rate starts near 1.0 and grows as yield accrues). **Every deposit after that** ignores the seed config and splits incoming SOL by the **live backing mix** instead. As REV and issuance arrive at **different rates**, backing grows at different rates → the mix drifts and **rev and iss APY diverge**.
 
-## Mints and redeems — two different ratios
+## Mints and redeems — one live backing mix
 
-There are two ratios users should understand:
+Deposits and withdrawals use the **same** rule: split by current backing.
 
-| | **Deposit split** | **Backing split (exit ratio)** |
-|---|-------------------|--------------------------------|
-| **What it is** | Policy for new deposits (`rev_split_bps` in global config) | Share of SOL backing rev vs iss **right now** |
-| **Used when** | Minting on `deposit` | `withdraw_instant` and `withdraw_delayed` |
-| **Drifts over time?** | Only when admin updates policy | **Yes** — as iss and rev accrue at different rates |
-| **Mainnet example** | 10% rev / 90% iss | ~10% rev / ~90% iss (tracks backing, e.g. ~9.96% / 90.04%) |
+| | **Backing mix** |
+|---|-----------------|
+| **What it is** | Share of SOL backing rev vs iss **right now** (`rev_backing / total_backing`) |
+| **Used when** | `deposit`, `withdraw_instant`, and `withdraw_delayed` |
+| **Drifts over time?** | **Yes** — as iss and rev accrue at different rates |
+| **Mainnet example** | Starts near the seed (e.g. ~10% / ~90%) and tracks live backing thereafter |
 
 #### Deposits
 
-New SOL deposited via the protocol mints **both** revSOL and issSOL according to the **deposit split** (unless the user uses DEX-only flow in the app — see [Use Cases](use-cases.md)).
+New SOL deposited via the protocol mints **both** revSOL and issSOL in proportion to the **current backing mix** (unless the user uses a market-only flow in the app — see [Use Cases](use-cases.md)).
 
 Why both tokens? SOL in the pool will earn **both** yield types; accounting assigns issuance to iss backing and REV to rev backing.
 
@@ -96,9 +96,9 @@ Alternatively, the desired token can be purchased on a DEX. (You’ll see these 
 
 #### Withdrawals
 
-To withdraw SOL from the protocol, users burn **both** tokens in proportion to the **current backing split** — not necessarily the deposit split from the day they entered.
+To withdraw SOL from the protocol, users burn **both** tokens in proportion to that same **current backing mix**.
 
-Example: if backing is 20% rev / 80% iss, withdrawing 10 SOL requires burning rev and iss tokens in that 20:80 proportion (see Simple Example, step 4).
+Example: if backing is 20% rev / 80% iss, withdrawing 10 SOL requires burning rev and iss tokens in that 20:80 proportion (see Simple Example, step 4). A fresh deposit at that moment would mint in the same 20:80 proportion.
 
 Users who want a **single-token** exposure (rev-only or iss-only) typically:
 
@@ -127,19 +127,19 @@ Because we initialized the pool ratio in line with their reward rate, the APYs o
 
 ## Simple Example
 
-> **Note:** The example uses a **1:4 rev:iss deposit split** for round numbers. Mainnet uses **1:9 (10%/90%)**; the logic is identical.
+> **Note:** The example uses a **1:4 rev:iss** starting mix for round numbers. Mainnet’s first deposit was seeded at **1:9 (10%/90%)**; afterward both deposits and withdrawals follow live backing. The logic is identical.
 
 1\. Protocol is initialized:
 
 * Let’s say the RevTec protocol is initialized on January 1st, 2026. At that moment, Solana staking is generating: 5% APY: 1% from REV and 4% from inflation.
-* The RevTec protocol is manually initialized with this 1:4 ratio.
-* An initial amount of 100 SOL is deposited into the protocol. The 1:4 ratio determines how the SOL is allocated:
+* The RevTec protocol is manually initialized with this 1:4 starting mix (used only for the first deposit).
+* An initial amount of 100 SOL is deposited into the protocol. The 1:4 mix determines how the SOL is allocated:
   * The REV bucket receives 20 SOL, and 20 revSOL are minted. revSOL has a fair value of 1 SOL.
   * The issuance bucket receives 80 SOL, and 80 issSOL are minted. issSOL has a fair value of 1 SOL.
 
 2\. The user deposits:
 
-* The protocol has been initialized and is in operation with a 1:4 ratio.
+* The protocol has been initialized; current backing is still 20% rev / 80% iss, so later deposits use that live mix (not a separate admin policy).
 * A user deposits 10 SOL, wishing to acquire revSOL only.
   * If the user stakes via the **basic** mechanism (without selecting “advanced mode”) the protocol will mint for him 2 revSOL and 8 issSOL. He must then manually sell his 8 issSOL for SOL, and repeat the staking action, or directly sell the 8 issSOL for revSOL.
   * If the user chooses **“advanced mode, direct”** the application will automate the action of staking and selling issSOL three times, before it stakes and uses the remaining SOL to purchase revSOL on a dex.
@@ -147,7 +147,7 @@ Because we initialized the pool ratio in line with their reward rate, the APYs o
 
 <figure><img src="../.gitbook/assets/image (40).png" alt="" width="563"><figcaption><p>The staking flow</p></figcaption></figure>
 
-* Let’s assume the user’s 10 SOL deposit followed the 1:4 ratio, adding 2 SOL to the REV bucket and 8 SOL to the issuance bucket.
+* The user’s 10 SOL deposit follows the live 1:4 backing mix, adding 2 SOL to the REV bucket and 8 SOL to the issuance bucket.
   * The REV bucket now has 20 + 2 = 22 SOL
   * The issuance bucket now has 80 + 8 = 88 SOL.
 
@@ -183,9 +183,9 @@ Generally, the choice of which staking and unstaking route to take will depend o
 RevTec is a dual-LST design: **issSOL** for issuance-like yield, **revSOL** for REV (fee) exposure, with fair value tracked on-chain as backing per token. It is the first dual staking token design we’re aware of on Solana; that novelty means:
 
 * **DEX liquidity** matters for single-token positions.
-* **Deposit split ≠ exit ratio** — exits follow live backing.
+* **Deposits and withdrawals share one live backing mix** — it drifts as yield accrues (only the very first deposit used a configured seed).
 * **REV APY is volatile** — quiet networks produce quiet revSOL; activity spikes produce the concentrated upside described above.
 
 The app simplifies routing (basic deposit, advanced direct, advanced via DEX). Choose the path that minimizes slippage and leftover inventory for your size.
 
-For current parameters (deposit split, fair values, APY), use [app.revtec.fi](https://app.revtec.fi).
+For current parameters (backing mix, fair values, APY), use [app.revtec.fi](https://app.revtec.fi).
