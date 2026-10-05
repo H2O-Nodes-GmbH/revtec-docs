@@ -1,13 +1,13 @@
 # Protocol Design
 
-## TL;DR
+## Summary
 
-* RevTec splits staking yield into two LSTs: **revSOL** (REV / fees + tips) and **issSOL** (issuance). Fair value of each is `backing / supply` and rises as yield accrues — same UX pattern as other Solana LSTs.
-* Yield described here applies to SOL deposited **through the protocol**. Direct validator stake without minting does **not** grow rev/iss backing.
-* Inside the pool, all protocol REV goes to rev backing and all issuance to iss backing (concentration), so token APYs can diverge a lot from vanilla staking.
-* **Deposit split** (mint policy) ≠ **backing split** (exit ratio). Redeems burn **both** tokens in the live backing ratio and pay SOL at fair value.
-* Single-token exposure uses a DEX (or app Advanced flows). DEX price can differ from fair value — see [Fair Value, Market Price & APY](fair-value-market-price-and-apy.md).
-* App APY numbers are annualized from **fair-value** growth after cranks run.
+* RevTec turns staking yield into two liquid staking tokens: **revSOL**, which earns Solana’s real economic value (transaction fees and tips), and **issSOL**, which earns issuance (newly minted SOL). Each token’s **fair value** is the SOL that backs it divided by how many tokens exist, and that fair value rises as rewards accrue — the same pattern as other liquid staking tokens on Solana.
+* The yield described on this page applies to SOL you deposit **through the RevTec protocol**. Staking SOL directly with the RevTec validator without minting these tokens does **not** increase revSOL or issSOL backing.
+* Inside the protocol pool, all of that pool’s fee-and-tip rewards go to revSOL’s backing, and all of its issuance rewards go to issSOL’s backing. Because of that concentration, each token’s yield can differ a lot from ordinary staking.
+* When you deposit, the protocol mints both tokens using a fixed **deposit split**. When you withdraw, you must burn both tokens using the **current backing mix**, which can drift over time. Withdrawals pay SOL at fair value.
+* If you want only revSOL or only issSOL, you use a market (or the app’s Advanced options). Market price can differ from fair value — see [Fair Value, Market Price & APY](fair-value-market-price-and-apy.md).
+* Yield figures in the app are annualized from how fast **fair value** grows after on-chain reward updates run.
 
 ## The Objective
 

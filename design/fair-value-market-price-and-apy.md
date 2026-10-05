@@ -1,14 +1,14 @@
 # Fair Value, Market Price & APY
 
-## TL;DR
+## Summary
 
-* **Fair value (FV)** = on-chain SOL backing per token. **Market price (M)** = DEX spot. They can diverge (premium or discount).
-* App / protocol **APY** is fair-value growth from yield — not automatically what you earn from a Raydium entry price.
-* Protocol redeem burns **both** tokens in the live backing ratio and pays SOL at fair value of that burn.
-* Buying only one token, then later buying the other to redeem, tracks that token’s **market** path — it does **not** cancel an entry premium or guarantee fair-value APY.
-* You get ~FV APY after a one-sided DEX buy mainly if that token’s premium/discount **% stays roughly constant** (or you mint/hold a full redeem basket from day one).
+* **Fair value** is how much SOL each token is worth on-chain (the SOL that backs it). **Market price** is what you pay on a trading venue like Raydium. Those two numbers can differ — the market can be higher (a premium) or lower (a discount).
+* The annualized yield shown in the app is how fast **fair value** grows from staking rewards. It is **not** automatically what you earn if you bought the token on Raydium at today’s market price.
+* To redeem through the protocol, you must burn **both** revSOL and issSOL in the current backing mix. The protocol pays you SOL based on fair value for that burn.
+* If you buy only one token on a market, then later buy the other so you can redeem, your return tends to follow that token’s **market price** over time. Buying the cheaper other token at exit does **not** undo an expensive entry, and it does **not** guarantee you earn the fair-value yield.
+* After buying only one token on a market, you roughly earn the fair-value yield mainly if that token’s premium or discount stays about the same while you hold it — or if you received both tokens from the protocol from day one and redeem both together.
 
-[Protocol Design](protocol-design.md) explains that each LST’s **fair value** is on-chain SOL backing per token, and that fair value rises as yield accrues. This page covers what that means when tokens also trade on a DEX — especially if you buy **one** token at a premium or discount and later redeem through the protocol.
+[Protocol Design](protocol-design.md) explains that each liquid staking token’s **fair value** is on-chain SOL backing per token, and that fair value rises as yield accrues. This page covers what that means when tokens also trade on a market — especially if you buy **one** token at a premium or discount and later redeem through the protocol.
 
 ## Two prices
 
