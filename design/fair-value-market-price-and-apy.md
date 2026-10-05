@@ -3,7 +3,7 @@
 ## Summary
 
 * **Fair value** is how much SOL each token is worth on-chain (the SOL that backs it). **Market price** is what you pay on a trading venue like Raydium. Those two numbers can differ — the market can be higher (a premium) or lower (a discount).
-* The annualized yield shown in the app is how fast **fair value** grows from staking rewards. It is **not** automatically what you earn if you bought the token on Raydium at today’s market price.
+* The annualized yield shown in the app is how fast **fair value** grows from staking rewards (each epoch’s growth, annualized, then averaged over the last 10 epochs — same idea as JitoSOL). It is **not** automatically what you earn if you bought the token on Raydium at today’s market price.
 * To redeem through the protocol, you must burn **both** revSOL and issSOL in the current backing mix. The protocol pays you SOL based on fair value for that burn.
 * If you buy only one token on a market, then later buy the other so you can redeem, your return tends to follow that token’s **market price** over time. Buying the cheaper other token at exit does **not** undo an expensive entry, and it does **not** guarantee you earn the fair-value yield.
 * After buying only one token on a market, you roughly earn the fair-value yield mainly if that token’s premium or discount stays about the same while you hold it — or if you received both tokens from the protocol from day one and redeem both together.
@@ -36,7 +36,7 @@ Live fair values and market prices are on [app.revtec.fi](https://app.revtec.fi)
 
 That is what holders earn **relative to fair value** — the growth of redeemable SOL per token. It is **not** automatically “what I earn if I bought on Raydium at today’s market price.”
 
-Headline APY cards on the app are annualized from fair-value growth over a trailing window. They describe backing growth, not a guaranteed return from a DEX entry price.
+Headline APY cards and the protocol Underlying APY chart use the **Jito method**: for each Solana epoch, take the change in SOL backing per token, annualize that one step on its own, then average the last **10** of those epoch APYs. That measures backing growth, not a guaranteed return from a DEX entry price.
 
 ## Buying on a DEX
 
@@ -98,7 +98,7 @@ Real markets add frictions: swap fees, slippage, imperfect market-making, and te
 
 ## How this shows up in the app
 
-* **Dashboard / protocol APY cards** — fair-value (protocol) APY: growth of on-chain backing per token.
+* **Dashboard / protocol APY cards** — fair-value (protocol) APY: epoch-over-epoch growth of on-chain backing per token, averaged over the last 10 epochs.
 * **Fair value vs market** — the app already surfaces both so you can see premium or discount.
 * **Any “market-implied” return framing** (now or later) should be treated as a **scenario** that depends on whether premium/discount closes — not as a guaranteed APY from a DEX purchase.
 

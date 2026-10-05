@@ -7,7 +7,7 @@
 * Inside the protocol pool, all of that pool’s fee-and-tip rewards go to revSOL’s backing, and all of its issuance rewards go to issSOL’s backing. Because of that concentration, each token’s yield can differ a lot from ordinary staking.
 * Deposits and withdrawals both use the **current backing mix** (rev backing ÷ total backing). You receive both tokens when you deposit, and you must burn both in that same live mix when you withdraw. The mix drifts over time as the two yield sources accrue at different rates. Withdrawals pay SOL at fair value.
 * If you want only revSOL or only issSOL, you use a market (or the app’s Advanced options). Market price can differ from fair value — see [Fair Value, Market Price & APY](fair-value-market-price-and-apy.md).
-* Yield figures in the app are annualized from how fast **fair value** grows after on-chain reward updates run.
+* Yield figures in the app are fair-value APY in the Jito style: each Solana epoch’s growth in SOL per token is annualized on its own, then averaged over the last **10 epochs**.
 
 ## The Objective
 
@@ -123,7 +123,7 @@ Because we initialized the pool ratio in line with their reward rate, the APYs o
 
 * **Inside the LSP:** 100% of REV from protocol stake → rev backing; 100% of issuance from protocol stake → iss backing.
 * **Not across the whole validator:** SOL staked to the RevTec validator **outside** the protocol (e.g. direct delegation) does not flow into revSOL backing.
-* **APY headline numbers** on the app are annualized from fair-value growth (`backing / supply`) over a trailing window — revSOL can look **flat or low** for weeks in calm markets, then **step up** when REV cranks process a batch of tips.
+* **APY headline numbers** on the app use the same method as JitoSOL: each epoch’s fair-value growth (`backing / supply`) is annualized on its own, then smoothed with a trailing **10-epoch** average. revSOL can still look **flat or low** for stretches in calm markets, then rise when REV cranks process a batch of tips — a single catch-up epoch is dampened by that average.
 
 ## Simple Example
 
