@@ -62,9 +62,9 @@ If you hold only revSOL (or only issSOL):
 
 Buying the missing leg is what makes “I only hold one token” redeemable. It does **not** by itself erase an entry premium on the token you already held.
 
-## The myth: “premium + discount cancel → I still get fair-value APY”
+## Why a premium and a discount do not cancel out
 
-Common intuition: *“I bought revSOL at a premium; to redeem I buy issSOL at a discount; they cancel and I still earn fair-value APY.”*
+A natural assumption is: *“I bought revSOL at a premium; to redeem I buy issSOL at a discount; they cancel and I still earn fair-value APY.”*
 
 **That is not generally true.**
 
