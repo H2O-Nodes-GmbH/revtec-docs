@@ -1,5 +1,14 @@
 # Protocol Design
 
+## TL;DR
+
+* RevTec splits staking yield into two LSTs: **revSOL** (REV / fees + tips) and **issSOL** (issuance). Fair value of each is `backing / supply` and rises as yield accrues — same UX pattern as other Solana LSTs.
+* Yield described here applies to SOL deposited **through the protocol**. Direct validator stake without minting does **not** grow rev/iss backing.
+* Inside the pool, all protocol REV goes to rev backing and all issuance to iss backing (concentration), so token APYs can diverge a lot from vanilla staking.
+* **Deposit split** (mint policy) ≠ **backing split** (exit ratio). Redeems burn **both** tokens in the live backing ratio and pay SOL at fair value.
+* Single-token exposure uses a DEX (or app Advanced flows). DEX price can differ from fair value — see [Fair Value, Market Price & APY](fair-value-market-price-and-apy.md).
+* App APY numbers are annualized from **fair-value** growth after cranks run.
+
 ## The Objective
 
 The objective of the protocol is to give the staker a choice between earning the “real economic value” (REV) of Solana’s transaction fees, or the inflationary issuance of new SOL tokens. Standard staking yield combines both, and RevTec aims to separate them, and allow users to earn them with much higher capital efficiency. To achieve this, RevTec creates two liquid staking tokens (LSTs): revSOL earns REV from transaction fees, while issSOL earns the issuance of new SOL.

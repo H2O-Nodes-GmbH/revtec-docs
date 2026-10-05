@@ -1,5 +1,13 @@
 # Fair Value, Market Price & APY
 
+## TL;DR
+
+* **Fair value (FV)** = on-chain SOL backing per token. **Market price (M)** = DEX spot. They can diverge (premium or discount).
+* App / protocol **APY** is fair-value growth from yield — not automatically what you earn from a Raydium entry price.
+* Protocol redeem burns **both** tokens in the live backing ratio and pays SOL at fair value of that burn.
+* Buying only one token, then later buying the other to redeem, tracks that token’s **market** path — it does **not** cancel an entry premium or guarantee fair-value APY.
+* You get ~FV APY after a one-sided DEX buy mainly if that token’s premium/discount **% stays roughly constant** (or you mint/hold a full redeem basket from day one).
+
 [Protocol Design](protocol-design.md) explains that each LST’s **fair value** is on-chain SOL backing per token, and that fair value rises as yield accrues. This page covers what that means when tokens also trade on a DEX — especially if you buy **one** token at a premium or discount and later redeem through the protocol.
 
 ## Two prices
