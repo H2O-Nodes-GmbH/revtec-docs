@@ -8,6 +8,18 @@ Please be cautious when interacting with links from social media or anywhere oth
 | **App** | [app.revtec.fi](https://app.revtec.fi/) |
 | **Tools** | [tools.revtec.fi](https://tools.revtec.fi/) — PnL analyzer, protocol analytics, Telegram alerts |
 | **Twitter** | [@RevTec_fi](https://x.com/RevTec_fi) |
+| **Docs** | [revtec.gitbook.io/revtec-docs](https://revtec.gitbook.io/revtec-docs) |
+
+### Machine-readable docs (for AI tools)
+
+These formats are easier for chatbots and coding agents to fetch than the normal HTML pages:
+
+| | |
+|---|---|
+| **Docs index** | [llms.txt](https://revtec.gitbook.io/revtec-docs/llms.txt) — list of all pages |
+| **Full export** | [llms-full.txt](https://revtec.gitbook.io/revtec-docs/llms-full.txt) — entire docs in one file |
+
+You can also append `.md` to any docs page URL for a Markdown version of that page (example: [Protocol Design](https://revtec.gitbook.io/revtec-docs/design/protocol-design.md)).
 
 ---
 
