@@ -13,6 +13,7 @@
 ## 🛠️ Design
 
 * [Protocol Design](design/protocol-design.md)
+* [Fair Value, Market Price & APY](design/fair-value-market-price-and-apy.md)
 * [Use Cases](design/use-cases.md)
 * [Risks](design/risks.md)
 * [Roadmap](design/roadmap.md)
